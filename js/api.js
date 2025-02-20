@@ -4,7 +4,7 @@ class Api {
     }
 
     async request(endpoint, options = {}) {
-        options.credentials = 'include'; // Важно для работы с сессиями
+        options.credentials = 'include'; // Важно для работы с eсессиями
 
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
             ...options,
