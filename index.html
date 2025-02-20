@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Книга Идей - Платформа для творческих проектов</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <h1>Книга Идей</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#home">Главная</a>
+                <a href="#ideas">Идеи</a>
+                <a href="#about">О нас</a>
+                <button id="loginBtn" class="auth-btn">Войти</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section">
+            <h1>Воплощайте свои идеи в реальность</h1>
+            <p>Делитесь идеями, находите единомышленников, создавайте проекты</p>
+            <button class="cta-button">Начать сейчас</button>
+        </section>
+
+        <section id="ideas" class="ideas-section">
+            <div class="ideas-header">
+                <div class="ideas-controls">
+                    <h2>Последние идеи</h2>
+                    <div class="category-filter">
+                        <div class="category-btn active" data-category="all">
+                            <span>Все</span>
+                        </div>
+                        <div class="category-btn" data-category="tech">
+                            <span>Технологии</span>
+                        </div>
+                        <div class="category-btn" data-category="art">
+                            <span>Искусство</span>
+                        </div>
+                        <div class="category-btn" data-category="science">
+                            <span>Наука</span>
+                        </div>
+                        <div class="category-btn" data-category="social">
+                            <span>Общество</span>
+                        </div>
+                        <div class="category-btn" data-category="business">
+                            <span>Бизнес</span>
+                        </div>
+                        <div class="category-btn" data-category="education">
+                            <span>Образование</span>
+                        </div>
+                        <div class="category-btn" data-category="entertainment">
+                            <span>Развлечения</span>
+                        </div>
+                        <div class="category-btn" data-category="other">
+                            <span>Другое</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="addIdeaBtn" class="add-idea-btn">
+                    <i class="fas fa-plus"></i> Добавить идею
+                </button>
+            </div>
+            <div class="ideas-container" id="ideasGrid">
+                <!-- Идеи будут добавляться динамически -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальное окно для входа -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-form">
+                <h2>Вход в систему</h2>
+                <form id="loginForm">
+                    <div class="form-fields">
+                        <div class="form-field">
+                            <input type="email" name="email" placeholder="Email" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="form-field">
+                            <input type="password" name="password" placeholder="Пароль" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <button type="submit">Войти</button>
+                </form>
+                <div class="divider">
+                    <span>или</span>
+                </div>
+                <div class="switch-form">
+                    <p>Нет аккаунта? <a href="#" id="openRegisterBtn">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-form">
+                <h2>Регистрация</h2>
+                <form id="registerForm">
+                    <div class="form-fields">
+                        <div class="form-field">
+                            <input type="text" name="username" placeholder="Имя пользователя" required>
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="form-field">
+                            <input type="email" name="email" placeholder="Email" required>
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="form-field">
+                            <input type="password" name="password" placeholder="Пароль" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="form-field">
+                            <input type="password" name="confirmPassword" placeholder="Подтвердите пароль" required>
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <button type="submit">Создать аккаунт</button>
+                </form>
+                <div class="divider">
+                    <span>или</span>
+                </div>
+                <div class="switch-form">
+                    <p>Уже есть аккаунт? <a href="#" id="openLoginBtn">Войти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для создания идеи -->
+    <div id="ideaModal" class="modal">
+        <div class="modal-content idea-modal-content">
+            <span class="close">&times;</span>
+            <div class="idea-form">
+                <h2>Новая идея</h2>
+                <form id="newIdeaForm">
+                    <div class="form-group">
+                        <input type="text" name="title" placeholder="Название идеи" required>
+                    </div>
+                    <div class="form-group">
+                        <select name="category" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="tech">Технологии</option>
+                            <option value="art">Искусство</option>
+                            <option value="science">Наука</option>
+                            <option value="social">Общество</option>
+                            <option value="business">Бизнес</option>
+                            <option value="education">Образование</option>
+                            <option value="entertainment">Развлечения</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="description" placeholder="Описание идеи" required></textarea>
+                    </div>
+                    <div class="form-group image-upload">
+                        <label for="ideaImage">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-image"></i>
+                                <span>Добавить изображение</span>
+                            </div>
+                            <img id="imagePreview" class="hidden">
+                        </label>
+                        <input type="file" id="ideaImage" name="image" accept="image/*" hidden>
+                    </div>
+                    <button type="submit">Опубликовать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Книга Идей. Все права защищены.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ideas.js"></script>
+
+    <!-- Добавьте это перед закрывающим тегом body -->
+    <div id="imageViewerModal" class="modal image-viewer-modal">
+        <div class="image-viewer-content">
+            <span class="close">&times;</span>
+            <img id="fullSizeImage" src="" alt="Полноразмерное изображение">
+        </div>
+    </div>
+</body>
+
+</html>
