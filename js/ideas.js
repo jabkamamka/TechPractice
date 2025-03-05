@@ -23,7 +23,6 @@ const demoIdeas = [
             }
         ],
         createdAt: "2024-03-15T09:00:00",
-        image: "https://picsum.photos/seed/eco/400/300"
     },
     {
         id: 2,
@@ -43,7 +42,6 @@ const demoIdeas = [
             }
         ],
         createdAt: "2024-03-16T10:00:00",
-        image: "https://picsum.photos/seed/art/400/300"
     },
     {
         id: 3,
@@ -63,7 +61,6 @@ const demoIdeas = [
             }
         ],
         createdAt: "2024-03-17T13:00:00",
-        image: "https://picsum.photos/seed/edu/400/300"
     }
 ];
 
