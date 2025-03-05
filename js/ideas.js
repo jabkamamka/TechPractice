@@ -74,6 +74,15 @@ if (!localStorage.getItem('ideas')) {
 
 class IdeasManager {
     constructor() {
+        // Проверяем авторизацию
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            const addIdeaBtn = document.getElementById('addIdeaBtn');
+            if (addIdeaBtn) {
+                addIdeaBtn.style.display = 'none';
+            }
+        }
+
         // Проверяем наличие всех необходимых элементов
         const requiredElements = {
             ideasGrid: document.getElementById('ideasGrid'),
@@ -227,6 +236,11 @@ class IdeasManager {
     }
 
     handleAddIdeaClick() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            alert('Пожалуйста, войдите в систему, чтобы добавить идею');
+            return;
+        }
         this.ideaModal.classList.add('active');
     }
 
@@ -238,13 +252,14 @@ class IdeasManager {
 
     handleNewIdea(e) {
         e.preventDefault();
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         const ideaData = {
             title: e.target.title.value,
             description: e.target.description.value,
             category: e.target.category.value,
-            author: "Гость",
-            authorId: "guest",
+            author: currentUser.username,
+            authorId: currentUser.id,
             likes: [],
             comments: [],
             createdAt: new Date().toISOString(),
@@ -286,8 +301,9 @@ class IdeasManager {
     }
 
     createIdeaCard(idea) {
-        const isLiked = idea.likes.includes("guest");
-        const isAuthor = false;
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const isLiked = currentUser ? idea.likes.includes(currentUser.id) : false;
+        const isAuthor = currentUser && currentUser.id === idea.authorId;
 
         const card = document.createElement('div');
         card.className = 'idea-card';
@@ -333,8 +349,8 @@ class IdeasManager {
                 </div>
             </div>
             <div class="comments-section" id="comments-${idea.id}">
-                ${this.renderComments(idea.comments, "guest")}
-                ${this.renderCommentForm(idea.id)}
+                ${currentUser ? this.renderComments(idea.comments, currentUser) : '<p class="auth-required">Войдите, чтобы видеть комментарии</p>'}
+                ${currentUser ? this.renderCommentForm(idea.id) : ''}
             </div>
         `;
 
@@ -391,7 +407,7 @@ class IdeasManager {
                     <div class="comment">
                         <div class="comment-header">
                             <div class="comment-author">${comment.author}</div>
-                            ${currentUser && (currentUser === comment.authorId || currentUser === this.ideas.find(i => i.comments.includes(comment)).authorId) ? `
+                            ${currentUser && (currentUser.id === comment.authorId || currentUser.id === this.ideas.find(i => i.comments.includes(comment)).authorId) ? `
                                 <div class="comment-actions">
                                     <button class="comment-delete-btn" data-comment-id="${comment.id}">
                                         <i class="fas fa-times"></i>
@@ -407,7 +423,7 @@ class IdeasManager {
     }
 
     renderCommentForm(ideaId) {
-        const currentUser = "guest";
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         if (!currentUser) {
             return '<p class="auth-required">Войдите, чтобы оставить комментарий</p>';
@@ -422,17 +438,20 @@ class IdeasManager {
     }
 
     handleLike(ideaId) {
-        const currentUser = "guest";
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
-            alert('Пожалуйста, войдите в систему, чтобы оценить идею');
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.click(); // Открываем окно входа
+            }
             return;
         }
 
         const idea = this.ideas.find(i => i.id === ideaId);
-        const likeIndex = idea.likes.indexOf(currentUser);
+        const likeIndex = idea.likes.indexOf(currentUser.id);
 
         if (likeIndex === -1) {
-            idea.likes.push(currentUser);
+            idea.likes.push(currentUser.id);
         } else {
             idea.likes.splice(likeIndex, 1);
         }
@@ -448,16 +467,22 @@ class IdeasManager {
 
     handleNewComment(e, ideaId) {
         e.preventDefault();
-        const currentUser = "guest";
-        if (!currentUser) return;
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.click(); // Открываем окно входа
+            }
+            return;
+        }
 
         const commentText = e.target.querySelector('input').value;
         const idea = this.ideas.find(i => i.id === ideaId);
 
         const newComment = {
             id: Date.now(),
-            author: currentUser,
-            authorId: currentUser,
+            author: currentUser.username,
+            authorId: currentUser.id,
             text: commentText,
             createdAt: new Date().toISOString()
         };
