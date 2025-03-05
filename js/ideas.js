@@ -470,4 +470,72 @@ class IdeasManager {
             this.ideasContainer.appendChild(card);
         });
     }
-} 
+}
+
+// Функция для подсчета рейтинга идеи
+function calculateIdeaRating(idea) {
+    const likesWeight = 1; // вес одного лайка
+    const commentsWeight = 2; // вес одного комментария
+
+    const likes = parseInt(idea.querySelector('.like-count')?.textContent || '0');
+    const comments = idea.querySelectorAll('.comment').length;
+
+    return (likes * likesWeight) + (comments * commentsWeight);
+}
+
+// Функция сортировки идей
+function sortIdeas() {
+    const ideasContainer = document.querySelector('.ideas-container');
+    const ideas = Array.from(ideasContainer.children);
+
+    // Сортируем идеи по рейтингу
+    ideas.sort((a, b) => {
+        const ratingA = calculateIdeaRating(a);
+        const ratingB = calculateIdeaRating(b);
+        return ratingB - ratingA; // сортировка по убыванию
+    });
+
+    // Применяем анимацию к контейнеру
+    ideasContainer.style.opacity = '0';
+
+    // Очищаем контейнер
+    ideasContainer.innerHTML = '';
+
+    // Добавляем отсортированные идеи обратно с небольшой задержкой
+    setTimeout(() => {
+        ideas.forEach(idea => {
+            ideasContainer.appendChild(idea);
+        });
+
+        // Плавно показываем контейнер
+        ideasContainer.style.opacity = '1';
+    }, 300);
+}
+
+// Функция обновления сортировки при изменении лайков или комментариев
+function updateIdeasOrder() {
+    sortIdeas();
+}
+
+// Добавляем обработчики событий для лайков и комментариев
+document.addEventListener('DOMContentLoaded', () => {
+    // Инициализируем сортировку при загрузке
+    sortIdeas();
+
+    // Обработчик для лайков
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('like-btn')) {
+            // Даем небольшую задержку для обновления счетчика
+            setTimeout(updateIdeasOrder, 100);
+        }
+    });
+
+    // Обработчик для добавления комментариев
+    document.addEventListener('submit', (e) => {
+        if (e.target.classList.contains('comment-form')) {
+            e.preventDefault();
+            // Даем небольшую задержку для добавления комментария
+            setTimeout(updateIdeasOrder, 100);
+        }
+    });
+}); 

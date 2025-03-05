@@ -37,25 +37,87 @@ body {
     align-items: center;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-color);
+    letter-spacing: normal;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 .nav-links a {
     color: var(--text-color);
     text-decoration: none;
-    margin-left: 2rem;
-    transition: color 0.3s ease;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+    border-radius: 2px;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
 }
 
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a.active {
+    color: var(--primary-color);
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
 .auth-btn {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(33, 150, 243, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.auth-btn:hover {
+    background-color: #1976D2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(33, 150, 243, 0.2);
 }
 
 .hero-section {
@@ -66,7 +128,136 @@ body {
     align-items: center;
     text-align: center;
     padding: 2rem;
-    background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+    background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="20" fill="none"/><circle cx="3" cy="3" r="1" fill="%232196F3" opacity="0.2"/></svg>') repeat;
+    opacity: 0.5;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    color: #1a202c;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    font-weight: 700;
+    max-width: 800px;
+    position: relative;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section p {
+    font-size: 1.25rem;
+    color: #4a5568;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    position: relative;
+}
+
+.cta-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    z-index: 1;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    transition: 0.5s;
+    z-index: -1;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+    background: #1976D2;
+}
+
+.cta-button:hover::before {
+    left: 100%;
+}
+
+.cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+}
+
+/* Добавляем эффект пульсации при нажатии */
+.cta-button:active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+.hero-decoration {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--primary-color);
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.hero-decoration-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    right: -150px;
+}
+
+.hero-decoration-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -100px;
+    left: -100px;
 }
 
 .ideas-section {
@@ -100,6 +291,7 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
+    transition: opacity 0.3s ease;
 }
 
 .idea-card {
@@ -108,6 +300,12 @@ body {
     padding: 1rem;
     box-shadow: var(--shadow);
     font-size: 0.95rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.idea-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .idea-card h3 {
@@ -219,48 +417,54 @@ body {
 
 .modal-content {
     background-color: white;
-    padding: 2.5rem;
+    padding: 2rem;
     width: 90%;
     max-width: 400px;
-    border-radius: 10px;
+    border-radius: 12px;
     position: relative;
-    margin: 0;
+    margin: 2rem auto;
     animation: modalAppear 0.3s ease-out;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .close {
     position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
+    right: 1.2rem;
+    top: 1.2rem;
     font-size: 1.5rem;
-    color: #666;
+    color: #999;
     cursor: pointer;
     transition: color 0.3s ease;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .close:hover {
-    color: #333;
+    color: var(--text-color);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Обновляем стили для форм авторизации */
+/* Стили для форм авторизации */
 .auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    max-width: 360px;
+    margin: 0 auto;
 }
 
 .auth-form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     color: var(--text-color);
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
 }
 
 .form-fields {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1rem;
 }
 
 .form-field {
@@ -269,29 +473,28 @@ body {
 
 .form-field input {
     width: 100%;
-    padding: 1rem;
-    padding-left: 2.8rem;
-    border: 2px solid #e0e0e0;
+    padding: 0.8rem;
+    padding-left: 2.5rem;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
-    background-color: #f8f9fa;
 }
 
 .form-field i {
     position: absolute;
-    left: 1rem;
+    left: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
     color: #999;
+    font-size: 1rem;
     transition: color 0.3s ease;
 }
 
 .form-field input:focus {
     border-color: var(--primary-color);
-    background-color: white;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
     outline: none;
-    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
 }
 
 .form-field input:focus+i {
@@ -299,27 +502,27 @@ body {
 }
 
 .auth-form button[type="submit"] {
+    width: 100%;
+    padding: 0.8rem;
     margin-top: 1rem;
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 1rem;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .auth-form button[type="submit"]:hover {
     background-color: #1976D2;
+    transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
 }
 
 .auth-form .divider {
-    margin: 1.5rem 0;
+    margin: 1.2rem 0;
     display: flex;
     align-items: center;
     text-align: center;
@@ -336,13 +539,14 @@ body {
 .auth-form .divider span {
     padding: 0 1rem;
     font-size: 0.9rem;
+    color: #666;
 }
 
 .auth-form .switch-form {
-    margin-top: 0.5rem;
     text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
     color: #666;
-    font-size: 0.95rem;
 }
 
 .auth-form .switch-form a {
@@ -353,7 +557,6 @@ body {
 }
 
 .auth-form .switch-form a:hover {
-    color: #1976D2;
     text-decoration: underline;
 }
 
@@ -379,10 +582,11 @@ body {
 }
 
 .footer {
-    background-color: white;
+    background-color: #1a202c;
+    color: white;
     padding: 2rem;
     text-align: center;
-    margin-top: 4rem;
+    margin-top: 0;
 }
 
 .idea-header {
@@ -791,4 +995,354 @@ body {
 .idea-category.other {
     background-color: #f5f5f5;
     color: #616161;
+}
+
+/* Обновляем стили для секции "О нас" */
+.about-section {
+    padding: 8rem 2rem;
+    background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+    position: relative;
+    overflow: hidden;
+    margin-top: 4rem;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.about-section h2 {
+    font-size: 2.5rem;
+    color: #1a202c;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.about-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.about-section p {
+    font-size: 1.2rem;
+    color: #4a5568;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 1.8;
+    position: relative;
+}
+
+/* Базовые медиа-запросы */
+@media (max-width: 1200px) {
+
+    .container,
+    .nav-container,
+    .ideas-section {
+        max-width: 960px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+
+    .container,
+    .nav-container,
+    .ideas-section {
+        max-width: 720px;
+    }
+
+    .hero-section h1 {
+        font-size: 3rem;
+    }
+
+    .ideas-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0.8rem;
+    }
+
+    .logo h1 {
+        font-size: 1.3rem;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: white;
+        padding: 1rem 0;
+        gap: 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        width: 100%;
+        padding: 1rem 2rem;
+        text-align: center;
+    }
+
+    .nav-links a::after {
+        display: none;
+    }
+
+    .auth-btn {
+        margin: 1rem 2rem;
+        width: calc(100% - 4rem);
+        justify-content: center;
+    }
+
+    /* Добавляем гамбургер меню */
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        z-index: 1001;
+        background: none;
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+
+    .menu-toggle span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--text-color);
+        margin: 4px 0;
+        transition: 0.3s;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Hero секция */
+    .hero-section {
+        min-height: 100vh;
+        padding: 6rem 1rem 2rem;
+    }
+
+    .hero-section h1 {
+        font-size: 2.2rem;
+        padding: 0 1rem;
+    }
+
+    .hero-section p {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+
+    /* Секция идей */
+    .ideas-section {
+        padding: 2rem 1rem;
+    }
+
+    .ideas-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .ideas-controls h2 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    /* Улучшенный фильтр категорий */
+    .category-filter {
+        position: relative;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0.5rem;
+        margin: 0 -1rem;
+        scroll-snap-type: x mandatory;
+    }
+
+    .category-filter::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-filter::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 30px;
+        background: linear-gradient(to right, transparent, white);
+        pointer-events: none;
+    }
+
+    .category-btn {
+        scroll-snap-align: start;
+        flex: 0 0 auto;
+        padding: 0.6rem 1.2rem;
+    }
+
+    /* Улучшенные карточки идей */
+    .ideas-container {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    .idea-card {
+        padding: 1.2rem;
+    }
+
+    /* Улучшенные модальные окна */
+    .modal {
+        padding: 1rem;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        border-radius: 12px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .auth-form,
+    .idea-form {
+        padding: 1.5rem;
+    }
+
+    .form-field {
+        margin-bottom: 1.2rem;
+    }
+
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
+        font-size: 16px;
+        /* Предотвращает зум на iOS */
+    }
+
+    /* Улучшенная секция О нас */
+    .about-section {
+        padding: 4rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .idea-card {
+        padding: 1rem;
+    }
+
+    .modal-content {
+        border-radius: 12px 12px 0 0;
+        margin-top: auto;
+    }
+
+    .close {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+}
+
+/* Ландшафтная ориентация */
+@media (max-height: 480px) and (orientation: landscape) {
+    .hero-section {
+        padding: 4rem 1rem;
+    }
+
+    .modal-content {
+        max-height: 100vh;
+    }
+
+    .auth-form,
+    .idea-form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+/* Поддержка больших экранов */
+@media (min-width: 1400px) {
+
+    .container,
+    .nav-container,
+    .ideas-section {
+        max-width: 1320px;
+    }
+
+    .hero-section h1 {
+        font-size: 4rem;
+    }
+
+    .ideas-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Анимация для мобильного меню */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-links.active {
+    animation: slideDown 0.3s ease forwards;
 }
