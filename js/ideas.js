@@ -3,6 +3,75 @@ document.addEventListener('DOMContentLoaded', () => {
     const ideasManager = new IdeasManager();
 });
 
+// Демо-данные для примера
+const demoIdeas = [
+    {
+        id: 1,
+        title: "Эко-приложение для сортировки мусора",
+        description: "Мобильное приложение, которое помогает людям правильно сортировать мусор с помощью сканирования штрих-кодов и распознавания изображений.",
+        category: "tech",
+        author: "Екатерина",
+        authorId: "demo1",
+        likes: ["user1", "user2", "user3"],
+        comments: [
+            {
+                id: 1,
+                author: "Михаил",
+                authorId: "user1",
+                text: "Отличная идея! Это очень поможет в популяризации переработки.",
+                createdAt: "2024-03-15T10:30:00"
+            }
+        ],
+        createdAt: "2024-03-15T09:00:00",
+        image: "https://picsum.photos/seed/eco/400/300"
+    },
+    {
+        id: 2,
+        title: "Фестиваль уличного искусства",
+        description: "Организация ежегодного фестиваля, где художники могут создавать муралы на стенах города, превращая серые здания в произведения искусства.",
+        category: "art",
+        author: "Александр",
+        authorId: "demo2",
+        likes: ["user1", "user4"],
+        comments: [
+            {
+                id: 2,
+                author: "Анна",
+                authorId: "user4",
+                text: "Замечательная инициатива! Наш город станет ярче.",
+                createdAt: "2024-03-16T11:20:00"
+            }
+        ],
+        createdAt: "2024-03-16T10:00:00",
+        image: "https://picsum.photos/seed/art/400/300"
+    },
+    {
+        id: 3,
+        title: "Образовательный проект для пожилых людей",
+        description: "Серия мастер-классов по использованию современных технологий для старшего поколения. Поможем освоить смартфоны, онлайн-банкинг и социальные сети.",
+        category: "education",
+        author: "Мария",
+        authorId: "demo3",
+        likes: ["user2", "user3", "user4", "user5"],
+        comments: [
+            {
+                id: 3,
+                author: "Владимир",
+                authorId: "user5",
+                text: "Это именно то, что нужно моим родителям!",
+                createdAt: "2024-03-17T14:15:00"
+            }
+        ],
+        createdAt: "2024-03-17T13:00:00",
+        image: "https://picsum.photos/seed/edu/400/300"
+    }
+];
+
+// Инициализация локального хранилища с демо-данными
+if (!localStorage.getItem('ideas')) {
+    localStorage.setItem('ideas', JSON.stringify(demoIdeas));
+}
+
 class IdeasManager {
     constructor() {
         // Проверяем наличие всех необходимых элементов
@@ -158,11 +227,6 @@ class IdeasManager {
     }
 
     handleAddIdeaClick() {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (!currentUser) {
-            alert('Пожалуйста, войдите в систему, чтобы добавить идею');
-            return;
-        }
         this.ideaModal.classList.add('active');
     }
 
@@ -174,14 +238,13 @@ class IdeasManager {
 
     handleNewIdea(e) {
         e.preventDefault();
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
         const ideaData = {
             title: e.target.title.value,
             description: e.target.description.value,
             category: e.target.category.value,
-            author: currentUser.username,
-            authorId: currentUser.id,
+            author: "Гость",
+            authorId: "guest",
             likes: [],
             comments: [],
             createdAt: new Date().toISOString(),
@@ -223,9 +286,8 @@ class IdeasManager {
     }
 
     createIdeaCard(idea) {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        const isLiked = currentUser ? idea.likes.includes(currentUser.id) : false;
-        const isAuthor = currentUser && currentUser.id === idea.authorId;
+        const isLiked = idea.likes.includes("guest");
+        const isAuthor = false;
 
         const card = document.createElement('div');
         card.className = 'idea-card';
@@ -271,7 +333,7 @@ class IdeasManager {
                 </div>
             </div>
             <div class="comments-section" id="comments-${idea.id}">
-                ${this.renderComments(idea.comments, currentUser)}
+                ${this.renderComments(idea.comments, "guest")}
                 ${this.renderCommentForm(idea.id)}
             </div>
         `;
@@ -329,7 +391,7 @@ class IdeasManager {
                     <div class="comment">
                         <div class="comment-header">
                             <div class="comment-author">${comment.author}</div>
-                            ${currentUser && (currentUser.id === comment.authorId || currentUser.id === this.ideas.find(i => i.comments.includes(comment)).authorId) ? `
+                            ${currentUser && (currentUser === comment.authorId || currentUser === this.ideas.find(i => i.comments.includes(comment)).authorId) ? `
                                 <div class="comment-actions">
                                     <button class="comment-delete-btn" data-comment-id="${comment.id}">
                                         <i class="fas fa-times"></i>
@@ -345,7 +407,7 @@ class IdeasManager {
     }
 
     renderCommentForm(ideaId) {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const currentUser = "guest";
 
         if (!currentUser) {
             return '<p class="auth-required">Войдите, чтобы оставить комментарий</p>';
@@ -360,17 +422,17 @@ class IdeasManager {
     }
 
     handleLike(ideaId) {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const currentUser = "guest";
         if (!currentUser) {
             alert('Пожалуйста, войдите в систему, чтобы оценить идею');
             return;
         }
 
         const idea = this.ideas.find(i => i.id === ideaId);
-        const likeIndex = idea.likes.indexOf(currentUser.id);
+        const likeIndex = idea.likes.indexOf(currentUser);
 
         if (likeIndex === -1) {
-            idea.likes.push(currentUser.id);
+            idea.likes.push(currentUser);
         } else {
             idea.likes.splice(likeIndex, 1);
         }
@@ -386,7 +448,7 @@ class IdeasManager {
 
     handleNewComment(e, ideaId) {
         e.preventDefault();
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const currentUser = "guest";
         if (!currentUser) return;
 
         const commentText = e.target.querySelector('input').value;
@@ -394,8 +456,8 @@ class IdeasManager {
 
         const newComment = {
             id: Date.now(),
-            author: currentUser.username,
-            authorId: currentUser.id,
+            author: currentUser,
+            authorId: currentUser,
             text: commentText,
             createdAt: new Date().toISOString()
         };
