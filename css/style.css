@@ -675,82 +675,66 @@ body {
 }
 
 .idea-form {
-    width: 100%;
+    padding: 1rem;
 }
 
 .idea-form h2 {
     margin-bottom: 1.5rem;
-    color: var(--text-color);
     text-align: center;
+    color: var(--text-color);
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
+.form-field {
+    margin-bottom: 1.2rem;
 }
 
-.idea-form input[type="text"],
-.idea-form textarea {
+.form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-field input[type="text"],
+.form-field select,
+.form-field textarea {
     width: 100%;
-    padding: 1rem;
-    border: 2px solid #e0e0e0;
+    padding: 0.8rem;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
-    background-color: #f8f9fa;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.idea-form input[type="text"]:focus,
-.idea-form textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    background-color: white;
-}
-
-.idea-form textarea {
-    min-height: 150px;
+.form-field textarea {
+    min-height: 120px;
     resize: vertical;
 }
 
-.image-upload {
+.form-field input[type="file"] {
     width: 100%;
-}
-
-.upload-placeholder {
-    border: 2px dashed #e0e0e0;
+    padding: 0.8rem;
+    border: 1px dashed #e0e0e0;
     border-radius: 8px;
-    padding: 2rem;
-    text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
-.upload-placeholder:hover {
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
     border-color: var(--primary-color);
-    background-color: #f8f9fa;
-}
-
-.upload-placeholder i {
-    font-size: 2rem;
-    color: #999;
-    margin-bottom: 0.5rem;
-}
-
-.upload-placeholder span {
-    display: block;
-    color: #666;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
 #imagePreview {
     max-width: 100%;
-    border-radius: 8px;
     margin-top: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#imagePreview.hidden {
-    display: none;
-}
-
-.idea-form button[type="submit"] {
+.submit-btn {
     width: 100%;
     padding: 1rem;
     background-color: var(--primary-color);
@@ -758,12 +742,61 @@ body {
     border: none;
     border-radius: 8px;
     font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.idea-form button[type="submit"]:hover {
+.submit-btn:hover {
     background-color: #1976D2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .idea-form {
+        padding: 1rem 0.5rem;
+    }
+
+    .form-field {
+        margin-bottom: 1rem;
+    }
+
+    .form-field input[type="text"],
+    .form-field select,
+    .form-field textarea {
+        padding: 0.7rem;
+        font-size: 16px;
+        /* Предотвращает масштабирование на iOS */
+    }
+
+    .submit-btn {
+        padding: 0.8rem;
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+
+    /* Улучшаем отображение загрузки изображений на мобильных устройствах */
+    .form-field input[type="file"] {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    #imagePreview {
+        margin-top: 0.5rem;
+    }
 }
 
 /* Обновленные стили для карточки идеи */

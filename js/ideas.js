@@ -214,10 +214,28 @@ class IdeasManager {
                 return;
             }
 
+            // Проверяем тип файла
+            if (!file.type.startsWith('image/')) {
+                alert('Пожалуйста, выберите изображение');
+                e.target.value = '';
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = (e) => {
-                this.imagePreview.src = e.target.result;
-                this.imagePreview.classList.remove('hidden');
+                try {
+                    this.imagePreview.src = e.target.result;
+                    this.imagePreview.classList.remove('hidden');
+                } catch (error) {
+                    console.error('Ошибка при загрузке изображения:', error);
+                    alert('Произошла ошибка при загрузке изображения. Попробуйте другое изображение.');
+                    this.resetImageUpload();
+                }
+            };
+            reader.onerror = () => {
+                console.error('Ошибка при чтении файла');
+                alert('Произошла ошибка при чтении файла. Попробуйте еще раз.');
+                this.resetImageUpload();
             };
             reader.readAsDataURL(file);
         }
@@ -249,46 +267,77 @@ class IdeasManager {
 
     handleNewIdea(e) {
         e.preventDefault();
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-        const ideaData = {
-            title: e.target.title.value,
-            description: e.target.description.value,
-            category: e.target.category.value,
-            author: currentUser.username,
-            authorId: currentUser.id,
-            likes: [],
-            comments: [],
-            createdAt: new Date().toISOString(),
-            image: this.imagePreview.classList.contains('hidden') ? null : this.imagePreview.src
-        };
-
-        if (this.editingIdeaId) {
-            const ideaIndex = this.ideas.findIndex(i => i.id === this.editingIdeaId);
-            if (ideaIndex !== -1) {
-                this.ideas[ideaIndex] = {
-                    ...this.ideas[ideaIndex],
-                    ...ideaData,
-                    id: this.editingIdeaId
-                };
+        try {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Пожалуйста, войдите в систему, чтобы добавить идею');
+                return;
             }
-            this.editingIdeaId = null;
-        } else {
-            ideaData.id = Date.now();
-            this.ideas.unshift(ideaData);
-        }
 
-        this.saveIdeas();
-        this.renderIdeas();
-        this.closeIdeaModal();
-        this.resetImageUpload();
+            // Проверяем заполнение обязательных полей
+            const title = e.target.title.value.trim();
+            const description = e.target.description.value.trim();
+            const category = e.target.category.value;
+
+            if (!title || !description || !category) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            const ideaData = {
+                title,
+                description,
+                category,
+                author: currentUser.username,
+                authorId: currentUser.id,
+                likes: [],
+                comments: [],
+                createdAt: new Date().toISOString()
+            };
+
+            // Добавляем изображение, только если оно было загружено
+            if (!this.imagePreview.classList.contains('hidden') && this.imagePreview.src) {
+                ideaData.image = this.imagePreview.src;
+            }
+
+            if (this.editingIdeaId) {
+                const ideaIndex = this.ideas.findIndex(i => i.id === this.editingIdeaId);
+                if (ideaIndex !== -1) {
+                    this.ideas[ideaIndex] = {
+                        ...this.ideas[ideaIndex],
+                        ...ideaData,
+                        id: this.editingIdeaId
+                    };
+                }
+                this.editingIdeaId = null;
+            } else {
+                ideaData.id = Date.now();
+                this.ideas.unshift(ideaData);
+            }
+
+            this.saveIdeas();
+            this.renderIdeas();
+            this.closeIdeaModal();
+            this.resetImageUpload();
+        } catch (error) {
+            console.error('Ошибка при публикации идеи:', error);
+            alert('Произошла ошибка при публикации идеи. Пожалуйста, попробуйте еще раз.');
+        }
     }
 
     resetImageUpload() {
-        const imageInput = document.getElementById('ideaImage');
-        imageInput.value = '';
-        this.imagePreview.src = '';
-        this.imagePreview.classList.add('hidden');
+        try {
+            const imageInput = document.getElementById('ideaImage');
+            if (imageInput) {
+                imageInput.value = '';
+            }
+            if (this.imagePreview) {
+                this.imagePreview.src = '';
+                this.imagePreview.classList.add('hidden');
+            }
+        } catch (error) {
+            console.error('Ошибка при сбросе формы загрузки изображения:', error);
+        }
     }
 
     openImageViewer(imageSrc, title) {

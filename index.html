@@ -162,43 +162,41 @@
 
     <!-- Модальное окно для создания идеи -->
     <div id="ideaModal" class="modal">
-        <div class="modal-content idea-modal-content">
+        <div class="modal-content">
             <span class="close">&times;</span>
-            <div class="idea-form">
-                <h2>Новая идея</h2>
-                <form id="newIdeaForm">
-                    <div class="form-group">
-                        <input type="text" name="title" placeholder="Название идеи" required>
-                    </div>
-                    <div class="form-group">
-                        <select name="category" required>
-                            <option value="">Выберите категорию</option>
-                            <option value="tech">Технологии</option>
-                            <option value="art">Искусство</option>
-                            <option value="science">Наука</option>
-                            <option value="social">Общество</option>
-                            <option value="business">Бизнес</option>
-                            <option value="education">Образование</option>
-                            <option value="entertainment">Развлечения</option>
-                            <option value="other">Другое</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="description" placeholder="Описание идеи" required></textarea>
-                    </div>
-                    <div class="form-group image-upload">
-                        <label for="ideaImage">
-                            <div class="upload-placeholder">
-                                <i class="fas fa-image"></i>
-                                <span>Добавить изображение</span>
-                            </div>
-                            <img id="imagePreview" class="hidden">
-                        </label>
-                        <input type="file" id="ideaImage" name="image" accept="image/*" hidden>
-                    </div>
-                    <button type="submit">Опубликовать</button>
-                </form>
-            </div>
+            <form id="newIdeaForm" class="idea-form">
+                <h2>Добавить новую идею</h2>
+                <div class="form-field">
+                    <label for="title">Название*</label>
+                    <input type="text" id="title" name="title" required maxlength="100"
+                        placeholder="Введите название идеи">
+                </div>
+                <div class="form-field">
+                    <label for="category">Категория*</label>
+                    <select id="category" name="category" required>
+                        <option value="">Выберите категорию</option>
+                        <option value="tech">Технологии</option>
+                        <option value="art">Искусство</option>
+                        <option value="science">Наука</option>
+                        <option value="social">Общество</option>
+                        <option value="business">Бизнес</option>
+                        <option value="education">Образование</option>
+                        <option value="entertainment">Развлечения</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="description">Описание*</label>
+                    <textarea id="description" name="description" required maxlength="1000"
+                        placeholder="Опишите вашу идею подробнее"></textarea>
+                </div>
+                <div class="form-field">
+                    <label for="ideaImage">Изображение (необязательно)</label>
+                    <input type="file" id="ideaImage" name="ideaImage" accept="image/*" capture="environment">
+                    <img id="imagePreview" class="hidden" alt="Предпросмотр">
+                </div>
+                <button type="submit" class="submit-btn">Опубликовать</button>
+            </form>
         </div>
     </div>
 
